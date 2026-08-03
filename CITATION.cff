@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite it as below."
+title: "Luvs Creator Price Index"
+abstract: >-
+  Monthly aggregate statistics on subscription pricing and discounting in the
+  creator economy, computed from publicly visible profile data. Aggregates only,
+  with no per-creator rows and a minimum of 15 profiles behind any breakdown.
+  Releases are frozen when the month closes and never revised.
+type: dataset
+authors:
+  - name: "LuvsOne"
+    website: "https://luvs.one"
+url: "https://luvs.one/stats"
+repository-code: "https://github.com/luvsone/creator-price-index"
+license: CC-BY-4.0
+keywords:
+  - creator economy
+  - subscription pricing
+  - price index
+  - discounting
+  - open data
