@@ -1,0 +1,45 @@
+# Refresh the published CSVs from the public API, once a month.
+#
+# NOT ACTIVE YET in any useful sense. The export script exits cleanly and writes
+# nothing while https://luvs.one/api/v1/price-index is unpublished, so this
+# workflow will run and no-op every month until the API goes live. Nothing needs
+# to be enabled at that point: the first run after launch writes the data.
+#
+# The 2nd of the month, not the 1st: a release for the closed month is frozen on
+# the 1st, so running a day later leaves room for that to have happened.
+name: Monthly data update
+
+on:
+  schedule:
+    - cron: '0 6 2 * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # No dependencies on purpose: the export uses only the standard library,
+      # so this job cannot break on a package it does not control.
+      - name: Export from the public API
+        run: python3 scripts/export_from_api.py
+
+      - name: Commit if anything changed
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No change. The API is either unpublished or has no new release."
+            exit 0
+          fi
+          git config user.name  "luvsone-bot"
+          git config user.email "data@luvs.one"
+          git add data
+          git commit -m "data: monthly refresh from the public API"
+          git push
