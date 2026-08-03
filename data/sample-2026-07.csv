@@ -1,8 +1,0 @@
-# SAMPLE DATA. Illustrative structure only, not real measurements. Do not cite.
-# Real releases will appear as data/price-index.csv and data/releases/YYYY-MM.csv
-# once the public API is live. See ../CODEBOOK.md for column definitions.
-month,avg_price_real,avg_price_advertised,median_price_real,pct_on_discount,pct_discount_over_90d,median_discount_depth,creators_tracked,creators_scored
-2026-04,0.00,0.00,0.00,0.00,0.00,0.00,0,0
-2026-05,0.00,0.00,0.00,0.00,0.00,0.00,0,0
-2026-06,0.00,0.00,0.00,0.00,0.00,0.00,0,0
-2026-07,0.00,0.00,0.00,0.00,0.00,0.00,0,0
