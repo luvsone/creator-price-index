@@ -5,7 +5,8 @@ abstract: >-
   Monthly aggregate statistics on subscription pricing and discounting in the
   creator economy, computed from publicly visible profile data. Aggregates only,
   with no per-creator rows and a minimum of 15 profiles behind any breakdown.
-  Releases are frozen when the month closes and never revised.
+  Releases are frozen when the month closes; a correction is published openly,
+  never applied silently.
 type: dataset
 authors:
   - name: "LuvsOne"

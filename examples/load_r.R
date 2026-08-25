@@ -16,16 +16,13 @@ script_path <- function() {
 here <- dirname(script_path())
 data_dir <- file.path(dirname(here), "data")
 
-real <- file.path(data_dir, "price-index.csv")
-sample <- file.path(data_dir, "sample-2026-07.csv")
-path <- if (file.exists(real)) real else sample
+path <- file.path(data_dir, "price-index.csv")
 
-if (identical(path, sample)) {
-  message("!! Reading the SAMPLE file. Every value in it is zero on purpose.")
-  message("!! It shows the layout and nothing else. Do not cite it.\n")
+if (!file.exists(path)) {
+  stop(sprintf("Not found: %s. Run scripts/export_from_api.py first.", path))
 }
 
-# comment.char skips the placeholder's warning header; harmless on the real file.
+# comment.char costs nothing here and keeps the reader robust to a header line.
 df <- read.csv(path, comment.char = "#", stringsAsFactors = FALSE)
 df <- df[order(df$month), ]
 

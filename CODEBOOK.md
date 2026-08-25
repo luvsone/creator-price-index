@@ -74,5 +74,5 @@ profile was observed, so it is shorter than the observation history.
 ## Related
 
 - Live figures and the frozen release archive: <https://luvs.one/stats>
-- What is measured and what is not: <https://luvs.one/methodology>
-- API: <https://luvs.one/stats#api>
+- Dataset documentation, sample definition and limitations: <https://luvs.one/research>
+- Read only API serving the same figures: <https://luvs.one/research#api>

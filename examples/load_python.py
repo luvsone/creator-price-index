@@ -19,15 +19,9 @@ import matplotlib.pyplot as plt  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(os.path.dirname(HERE), "data")
 
-# The real file once it is published, the placeholder before that. `comment='#'`
-# is what lets the placeholder's warning header through unread.
-REAL = os.path.join(DATA, "price-index.csv")
-SAMPLE = os.path.join(DATA, "sample-2026-07.csv")
-path = REAL if os.path.exists(REAL) else SAMPLE
-
-if path == SAMPLE:
-    print("!! Reading the SAMPLE file. Every value in it is zero on purpose.")
-    print("!! It shows the layout and nothing else. Do not cite it.\n")
+path = os.path.join(DATA, "price-index.csv")
+if not os.path.exists(path):
+    sys.exit(f"Not found: {path}. Run scripts/export_from_api.py first.")
 
 df = pd.read_csv(path, comment="#", parse_dates=False)
 df = df.sort_values("month")
@@ -52,6 +46,3 @@ fig.tight_layout()
 out = os.path.join(HERE, "chart.png")
 fig.savefig(out, dpi=140)
 print(f"\nSaved {out}")
-
-if path == SAMPLE:
-    sys.exit(0)

@@ -1,0 +1,31 @@
+{
+  "upload_type": "dataset",
+  "title": "Luvs Creator Price Index",
+  "creators": [
+    {
+      "name": "LuvsOne"
+    }
+  ],
+  "description": "<p>Monthly aggregate statistics on subscription pricing and discounting in the subscription creator economy, computed from publicly visible profile data.</p><p>Each release reports, for one calendar month: the mean and median price actually charged after every discount in effect, the mean advertised list price measured on the same profiles, the share of priced profiles running a discount, the share of those discounts that have run without a break for 90 days or more, the median discount depth, and the number of priced profiles the row was computed on.</p><p>Aggregates only. There are no usernames, no identifiers and no row that describes one person, and any breakdown is published only where at least 15 profiles back it. A release is frozen when the month closes; a correction is published openly and recorded in the changelog, never applied silently.</p><p>Column definitions, the computation of every metric and the known limitations are in CODEBOOK.md in this archive and at https://luvs.one/research</p>",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "language": "eng",
+  "keywords": [
+    "creator economy",
+    "subscription pricing",
+    "price index",
+    "discounting",
+    "open data",
+    "online platforms"
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isDerivedFrom",
+      "identifier": "https://luvs.one/stats"
+    },
+    {
+      "relation": "isDocumentedBy",
+      "identifier": "https://luvs.one/research"
+    }
+  ]
+}

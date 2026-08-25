@@ -1,29 +1,27 @@
 # data/
 
-## Status: no real data published yet
-
-The only file here is `sample-2026-07.csv`. It exists to show the column layout
-and nothing else. **Every value in it is zero on purpose, so it cannot be mistaken
-for a measurement and cannot be cited.**
-
-Real data lands here once the public API is live:
-
 | File | Contents |
 |---|---|
 | `price-index.csv` | The full monthly series, rewritten by the monthly job as new releases are frozen |
-| `releases/YYYY-MM.csv` | One immutable file per release month, never edited after it is written |
+| `releases/YYYY-MM.csv` | One file per release month |
 
 `price-index.csv` is the convenient file. `releases/` is the citable one: a release
-is computed once when the month closes and never revised, so a row in
-`releases/2026-07.csv` will read the same in five years.
+is computed once when the month closes, so a row in `releases/2026-07.csv` reads
+the same whenever someone follows a citation to it.
+
+A release file is rewritten in exactly one case: the source published a correction
+to that month, which luvs.one records in its own changelog. Mirroring a correction
+is not the same as revising history quietly, and it beats the alternative, which is
+a copy here that contradicts the source about the same month. Every such rewrite is
+a separate commit, so `git log` shows what changed and when.
 
 Column definitions, methodology and known limitations are in
 [../CODEBOOK.md](../CODEBOOK.md).
 
 ## Reading the files
 
-The sample carries `#` comment lines at the top. Real files will not, but passing
-the comment character costs nothing either way:
+The files carry no comment lines, but passing the comment character costs nothing
+and makes a reader robust to one being added:
 
 ```python
 pd.read_csv('data/price-index.csv', comment='#')

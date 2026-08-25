@@ -5,20 +5,17 @@ number, computed the same way every month from publicly visible profile data:
 the price fans actually pay, after every discount. Releases are frozen when the
 month closes, so you can cite them.
 
-[Live stats hub](https://luvs.one/stats) · [Methodology](https://luvs.one/methodology) · [API docs](https://luvs.one/stats#api)
+[Live stats hub](https://luvs.one/stats) · [Dataset documentation](https://luvs.one/research) · [API](https://luvs.one/research#api)
 
-> **No real data is published here yet.** The only file in `data/` is a
-> placeholder whose values are all zero, kept to show the column layout. Real
-> releases land here once the public API goes live, written by the monthly job in
-> `.github/workflows/`. Nothing in this repository is citable until then.
+A new month is added by the job in `.github/workflows/`, which reads the public
+API on the 2nd of each month, once the previous month has been frozen.
 
 ## What's in this repository
 
 | Path | Contents |
 |---|---|
-| `data/price-index.csv` | The full monthly series. Not published yet. |
-| `data/releases/YYYY-MM.csv` | One immutable file per release month, never edited after it is written. Empty for now. |
-| `data/sample-2026-07.csv` | Placeholder showing the column layout. All values are zero. |
+| `data/price-index.csv` | The full monthly series, rewritten as each new month is frozen. |
+| `data/releases/YYYY-MM.csv` | One file per release month. Rewritten only to follow a published correction at the source, and every such rewrite is its own commit. |
 | `CODEBOOK.md` | Column definitions, method, and known limitations. |
 | `CITATION.cff` | Machine readable citation metadata. |
 | `examples/load_python.py` | Load with pandas, print the last six months, plot the series. |
@@ -53,8 +50,7 @@ print(df.tail(6))
 df.plot(x='month', y=['avg_price_advertised', 'avg_price_real'])
 ```
 
-`examples/load_python.py` does the same and writes a chart. Both fall back to the
-placeholder file while the real one is unpublished.
+`examples/load_python.py` does the same and writes a chart.
 
 ## What this data is not
 
@@ -82,4 +78,9 @@ renders it as a "Cite this repository" button.
 ## About
 
 Maintained by [LuvsOne](https://luvs.one), an independent scoring and price
-tracking platform for the creator economy. Contact: data@luvs.one
+tracking platform for the creator economy.
+
+Questions about the data, or a breakdown that is not published here? Ask through
+the [contact form](https://luvs.one/contact?topic=press). We reply within two
+business days and prepare custom aggregate cuts for journalists and researchers,
+free, with the methodology attached.
