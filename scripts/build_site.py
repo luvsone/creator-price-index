@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-build_site.py — renders docs/index.html, the GitHub Pages landing page for the
+build_site.py: renders docs/index.html, the GitHub Pages landing page for the
 Luvs Creator Price Index.
 
 The page is GENERATED from the data that ships in this repository, never hand
@@ -186,10 +186,10 @@ def render():
 body {{ margin:0; background:var(--bg); color:var(--fg);
   font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   -webkit-text-size-adjust:100%; }}
-.wrap {{ max-width:920px; margin:0 auto; padding:0 20px 80px; }}
+.wrap {{ width:100%; padding:0 clamp(18px,3vw,44px) 80px; }}
 header {{ padding:56px 0 28px; border-bottom:1px solid var(--line); margin-bottom:36px; }}
 h1 {{ font-size:clamp(28px,5vw,40px); line-height:1.15; margin:0 0 12px; letter-spacing:-0.02em; }}
-.lede {{ font-size:18px; color:var(--fg2); margin:0 0 20px; max-width:62ch; }}
+.lede {{ font-size:18px; color:var(--fg2); margin:0 0 20px; }}
 .meta {{ display:flex; flex-wrap:wrap; gap:8px; }}
 .pill {{ font-size:13px; padding:5px 11px; border:1px solid var(--line); border-radius:999px;
   color:var(--fg2); text-decoration:none; background:var(--soft); }}
