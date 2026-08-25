@@ -12,7 +12,12 @@ name: Monthly data update
 on:
   schedule:
     - cron: '0 6 2 * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force_mirrors:
+        description: 'Push to Kaggle and Hugging Face even if nothing changed (for testing)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -33,9 +38,11 @@ jobs:
         run: python3 scripts/export_from_api.py
 
       - name: Commit if anything changed
+        id: commit
         run: |
           if [ -z "$(git status --porcelain)" ]; then
             echo "No change. The API is either unpublished or has no new release."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name  "luvsone-bot"
@@ -43,6 +50,7 @@ jobs:
           git add data
           git commit -m "data: monthly refresh from the public API"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
 
       # One GitHub Release per data month, created automatically so the Zenodo
       # webhook mints the matching version DOI with zero manual steps. The tag is
@@ -72,3 +80,42 @@ jobs:
             "Dataset documentation and read only API: https://luvs.one/research" \
             "Aggregates only, CC BY 4.0.")
           gh release create "$tag" --title "${label} release" --notes "$notes"
+
+      # ── Mirrors. Both steps SKIP CLEANLY when their secrets are absent, so the
+      # workflow stays green before the tokens are configured and after any token
+      # is revoked. They push only when this run committed fresh data (or when
+      # force_mirrors is checked on a manual run, which exists to test the
+      # tokens without waiting a month).
+      - name: Mirror to Kaggle
+        if: steps.commit.outputs.changed == 'true' || inputs.force_mirrors
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: |
+          if [ -z "$KAGGLE_USERNAME" ] || [ -z "$KAGGLE_KEY" ]; then
+            echo "Kaggle secrets not configured; skipping mirror."
+            exit 0
+          fi
+          pip -q install kaggle
+          stage=$(mktemp -d)
+          cp data/price-index.csv CODEBOOK.md "$stage"/
+          cp data/releases/*.csv "$stage"/
+          printf '{"id": "luvsone/creator-subscription-pricing-luvs-index"}\n' > "$stage/dataset-metadata.json"
+          month=$(tail -1 data/price-index.csv | cut -d, -f1)
+          kaggle datasets version -p "$stage" -m "Monthly refresh: data through ${month}" --quiet
+          echo "Kaggle mirror updated through ${month}."
+
+      - name: Mirror to Hugging Face
+        if: steps.commit.outputs.changed == 'true' || inputs.force_mirrors
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "HF_TOKEN not configured; skipping mirror."
+            exit 0
+          fi
+          pip -q install -U huggingface_hub
+          month=$(tail -1 data/price-index.csv | cut -d, -f1)
+          hf upload luvsone/creator_price_index data/price-index.csv price-index.csv \
+            --repo-type dataset --commit-message "Monthly refresh: data through ${month}"
+          echo "Hugging Face mirror updated through ${month}."
