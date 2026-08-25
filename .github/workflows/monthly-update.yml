@@ -37,6 +37,14 @@ jobs:
       - name: Export from the public API
         run: python3 scripts/export_from_api.py
 
+      # Regenerates docs/index.html from the CSV that was just written, so the
+      # published landing page can never describe a release the data does not
+      # contain. The generator is deterministic (it reads only repository files,
+      # never the clock), so a month with no new data leaves the file untouched
+      # and the change check below still reports "no change" correctly.
+      - name: Rebuild the landing page
+        run: python3 scripts/build_site.py
+
       - name: Commit if anything changed
         id: commit
         run: |
@@ -47,7 +55,7 @@ jobs:
           fi
           git config user.name  "luvsone-bot"
           git config user.email "data@luvs.one"
-          git add data
+          git add data docs
           git commit -m "data: monthly refresh from the public API"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"

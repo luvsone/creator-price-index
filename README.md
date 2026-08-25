@@ -5,7 +5,7 @@ number, computed the same way every month from publicly visible profile data:
 the price fans actually pay, after every discount. Releases are frozen when the
 month closes, so you can cite them.
 
-[Live stats hub](https://luvs.one/stats) · [Dataset documentation](https://luvs.one/research) · [API](https://luvs.one/research#api)
+[Dataset home page](https://luvsone.github.io/creator-price-index/) · [Live stats hub](https://luvs.one/stats) · [Dataset documentation](https://luvs.one/research) · [API](https://luvs.one/research#api)
 
 A new month is added by the job in `.github/workflows/`, which reads the public
 API on the 2nd of each month, once the previous month has been frozen.
@@ -21,6 +21,8 @@ API on the 2nd of each month, once the previous month has been frozen.
 | `examples/load_python.py` | Load with pandas, print the last six months, plot the series. |
 | `examples/load_r.R` | Load with base R and summarise. |
 | `scripts/export_from_api.py` | Fetches the public API and writes the CSVs. Exits cleanly while the API is unpublished. |
+| `scripts/build_site.py` | Regenerates `docs/index.html`, the GitHub Pages landing page, from the CSV and the codebook. |
+| `docs/index.html` | The published landing page. Generated, never hand edited. |
 
 ## Data schema
 

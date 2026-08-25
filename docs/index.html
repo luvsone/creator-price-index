@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luvs Creator Price Index: monthly subscription pricing data</title>
+<meta name="description" content="Open monthly data on what a creator subscription actually costs after discounts. Frozen releases, CC BY 4.0, DOI 10.5281/zenodo.22094426. Latest release: July 2026.">
+<link rel="canonical" href="https://luvsone.github.io/creator-price-index/">
+<meta property="og:title" content="Luvs Creator Price Index">
+<meta property="og:description" content="Monthly subscription pricing data from the creator economy. Frozen, citable releases under CC BY 4.0.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luvsone.github.io/creator-price-index/">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Luvs Creator Price Index",
+  "alternateName": "LCPI",
+  "description": "Monthly aggregate statistics on subscription pricing and discounting in the creator economy, computed from publicly visible profile data. Aggregates only. Releases are frozen when the month closes.",
+  "url": "https://luvsone.github.io/creator-price-index/",
+  "identifier": "https://doi.org/10.5281/zenodo.22094426",
+  "version": "2026-07",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "creator": {"@type": "Organization", "name": "LuvsOne", "url": "https://luvs.one"},
+  "publisher": {"@type": "Organization", "name": "LuvsOne", "url": "https://luvs.one"},
+  "spatialCoverage": "Worldwide",
+  "temporalCoverage": "2026-03/2026-07",
+  "isBasedOn": "https://luvs.one/stats",
+  "distribution": [
+    {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://raw.githubusercontent.com/luvsone/creator-price-index/main/data/price-index.csv"},
+    {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://luvs.one/api/v1/price-index"}
+  ]
+}</script>
+<style>
+:root {
+  --bg:#fff; --fg:#16141a; --fg2:#4a4550; --line:#e6e2ea; --soft:#faf9fb;
+  --accent:#7c3aed; --code:#f4f2f7;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#131117; --fg:#f2eff5; --fg2:#a8a1b4; --line:#2b2733; --soft:#1a1720;
+           --accent:#b087ff; --code:#1e1a26; }
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-text-size-adjust:100%; }
+.wrap { max-width:920px; margin:0 auto; padding:0 20px 80px; }
+header { padding:56px 0 28px; border-bottom:1px solid var(--line); margin-bottom:36px; }
+h1 { font-size:clamp(28px,5vw,40px); line-height:1.15; margin:0 0 12px; letter-spacing:-0.02em; }
+.lede { font-size:18px; color:var(--fg2); margin:0 0 20px; max-width:62ch; }
+.meta { display:flex; flex-wrap:wrap; gap:8px; }
+.pill { font-size:13px; padding:5px 11px; border:1px solid var(--line); border-radius:999px;
+  color:var(--fg2); text-decoration:none; background:var(--soft); }
+.pill:hover { border-color:var(--accent); color:var(--fg); }
+h2 { font-size:22px; margin:44px 0 6px; letter-spacing:-0.01em; }
+h2 + p { margin-top:0; color:var(--fg2); }
+a { color:var(--accent); }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin:20px 0 0; }
+.tile { border:1px solid var(--line); border-radius:12px; padding:16px; background:var(--soft); }
+.tile-k { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--fg2); }
+.tile-v { font-size:30px; font-weight:600; margin:6px 0 4px; font-variant-numeric:tabular-nums; }
+.tile-d { font-size:13px; color:var(--fg2); margin:0; }
+.scroll { overflow-x:auto; margin:18px 0; border:1px solid var(--line); border-radius:12px; }
+table { border-collapse:collapse; width:100%; font-size:14px; }
+th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); white-space:nowrap; }
+th { background:var(--soft); font-weight:600; font-size:13px; }
+tr:last-child td { border-bottom:0; }
+td.n { font-variant-numeric:tabular-nums; }
+td.t, td:last-child { white-space:normal; }
+code { background:var(--code); padding:2px 6px; border-radius:5px; font-size:13px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+pre { background:var(--code); padding:14px 16px; border-radius:12px; overflow-x:auto;
+  font-size:13px; line-height:1.5; border:1px solid var(--line); }
+pre code { background:none; padding:0; }
+ul { padding-left:20px; }
+li { margin:8px 0; }
+.cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; }
+footer { margin-top:56px; padding-top:24px; border-top:1px solid var(--line);
+  color:var(--fg2); font-size:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Luvs Creator Price Index</h1>
+  <p class="lede">What a creator subscription actually costs per month, after every discount, measured the same way each month from publicly visible profile data. Each release is frozen when the month closes, so a figure you cite today reads the same in a year.</p>
+  <div class="meta">
+    <a class="pill" href="https://doi.org/10.5281/zenodo.22094426">DOI 10.5281/zenodo.22094426</a>
+    <a class="pill" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    <a class="pill" href="https://github.com/luvsone/creator-price-index">Source repository</a>
+    <span class="pill">Latest release: July 2026</span>
+  </div>
+</header>
+
+<h2>The July 2026 release</h2>
+<p>Computed on 496 priced profiles. Empty cells mean a measure was not computable, never zero.</p>
+<div class="grid"><div class=tile><div class=tile-k>Median price charged</div><div class=tile-v>$6.30</div><p class=tile-d>What the middle subscription actually costs per month, after discounts.</p></div><div class=tile><div class=tile-k>Mean price charged</div><div class=tile-v>$8.19</div><p class=tile-d>The average of the same charged prices.</p></div><div class=tile><div class=tile-k>Mean price advertised</div><div class=tile-v>$12.76</div><p class=tile-d>The list price on the same profiles, before any discount.</p></div><div class=tile><div class=tile-k>Profiles on discount</div><div class=tile-v>56.5%</div><p class=tile-d>Share of priced profiles running a discount when the month closed.</p></div><div class=tile><div class=tile-k>Median discount depth</div><div class=tile-v>50.0%</div><p class=tile-d>How far an active discount cuts the advertised price.</p></div><div class=tile><div class=tile-k>Discounts running 90 days or more</div><div class=tile-v>47.1%</div><p class=tile-d>Of the profiles on discount, the share held without a break.</p></div></div>
+
+<h2>Full series</h2>
+<p>Every month published so far, newest first. The same table ships as <a href="https://raw.githubusercontent.com/luvsone/creator-price-index/main/data/price-index.csv">price-index.csv</a>.</p>
+<div class="scroll"><table>
+<thead><tr><th>Month</th><th>Median charged</th><th>Mean charged</th><th>Mean advertised</th><th>On discount</th><th>Median depth</th><th>Held 90 days or more</th><th>Sample</th></tr></thead>
+<tbody><tr><td>July 2026</td><td class=n>$6.30</td><td class=n>$8.19</td><td class=n>$12.76</td><td class=n>56.5%</td><td class=n>50.0%</td><td class=n>47.1%</td><td class=n>496</td></tr><tr><td>June 2026</td><td class=n>$5.99</td><td class=n>$7.81</td><td class=n>$12.90</td><td class=n>58.1%</td><td class=n>60.0%</td><td class=n>48.8%</td><td class=n>497</td></tr><tr><td>May 2026</td><td class=n>$6.00</td><td class=n>$8.08</td><td class=n>$12.98</td><td class=n>55.2%</td><td class=n>60.0%</td><td class=n>n/a</td><td class=n>426</td></tr><tr><td>April 2026</td><td class=n>$6.40</td><td class=n>$8.20</td><td class=n>$12.92</td><td class=n>55.5%</td><td class=n>55.0%</td><td class=n>n/a</td><td class=n>422</td></tr><tr><td>March 2026</td><td class=n>$6.40</td><td class=n>$8.30</td><td class=n>$12.93</td><td class=n>55.3%</td><td class=n>55.0%</td><td class=n>n/a</td><td class=n>421</td></tr></tbody>
+</table></div>
+
+<h2>Get the data</h2>
+<div class="cols">
+<div>
+<h3 style="font-size:15px;margin:0 0 6px">Files</h3>
+<ul>
+<li><a href="https://raw.githubusercontent.com/luvsone/creator-price-index/main/data/price-index.csv">Full series (CSV)</a>, rewritten as each month is frozen.</li>
+<li><a href="https://github.com/luvsone/creator-price-index/tree/main/data/releases">Frozen releases</a>, one immutable file per month.</li>
+<li><a href="https://luvs.one/api/v1/price-index.zip">Release bundle (.zip)</a>: CSV, JSON metadata and a README with the citation.</li>
+</ul>
+</div>
+<div>
+<h3 style="font-size:15px;margin:0 0 6px">API</h3>
+<ul>
+<li><a href="https://luvs.one/api/v1/price-index">Full series as JSON</a>, read only, no key, open CORS.</li>
+<li><a href="https://luvs.one/api/v1/price-index.csv">Same series as CSV</a>.</li>
+<li>Add <code>?release=YYYY-MM</code> to pin a response to a frozen month.</li>
+</ul>
+</div>
+</div>
+
+<h3 style="font-size:15px;margin:24px 0 6px">Frozen release files</h3>
+<ul style="columns:2;column-gap:32px"><li><a href="https://raw.githubusercontent.com/luvsone/creator-price-index/main/data/releases/2026-07.csv">July 2026</a></li><li><a href="https://raw.githubusercontent.com/luvsone/creator-price-index/main/data/releases/2026-06.csv">June 2026</a></li><li><a href="https://raw.githubusercontent.com/luvsone/creator-price-index/main/data/releases/2026-05.csv">May 2026</a></li><li><a href="https://raw.githubusercontent.com/luvsone/creator-price-index/main/data/releases/2026-04.csv">April 2026</a></li><li><a href="https://raw.githubusercontent.com/luvsone/creator-price-index/main/data/releases/2026-03.csv">March 2026</a></li></ul>
+
+<h3 style="font-size:15px;margin:24px 0 6px">Mirrors</h3>
+<ul>
+<li><a href="https://doi.org/10.5281/zenodo.22094426">Zenodo</a>, the archived and versioned copy of record.</li>
+<li><a href="https://www.kaggle.com/datasets/luvsone/creator-subscription-pricing-luvs-index">Kaggle</a>, with a starter notebook.</li>
+<li><a href="https://huggingface.co/datasets/luvsone/creator_price_index">Hugging Face</a>, with dataset viewer and Croissant metadata.</li>
+</ul>
+
+<h2>How to cite</h2>
+<p>The DOI resolves to the newest version. To cite one frozen month, use its own release file.</p>
+<pre><code>LuvsOne (2026). Luvs Creator Price Index, July 2026 release. https://doi.org/10.5281/zenodo.22094426</code></pre>
+<pre><code>@dataset{luvsone_price_index,
+  title     = {Luvs Creator Price Index},
+  author    = {{LuvsOne}},
+  year      = {2026},
+  version   = {2026-07},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22094426},
+  url       = {https://doi.org/10.5281/zenodo.22094426}
+}</code></pre>
+
+<h2>Column definitions</h2>
+<p>The same definitions ship as <a href="https://github.com/luvsone/creator-price-index/blob/main/CODEBOOK.md">CODEBOOK.md</a> with the data.</p>
+<div class="scroll"><table>
+<thead><tr><th>Column</th><th>Type</th><th>Definition</th></tr></thead>
+<tbody><tr><td><code>month</code></td><td class=t>`YYYY-MM`</td><td>The calendar month the row describes.</td></tr><tr><td><code>avg_price_real</code></td><td class=t>USD, 2 decimals</td><td>Mean price actually charged for a monthly subscription across the tracked profiles, after every discount in effect.</td></tr><tr><td><code>avg_price_advertised</code></td><td class=t>USD, 2 decimals</td><td>Mean list price across the same profiles, before any discount. Measured on the same set as `avg_price_real`, so the gap between the two is discount rather than an artefact of different denominators.</td></tr><tr><td><code>median_price_real</code></td><td class=t>USD, 2 decimals</td><td>Median of the same charged prices. Less sensitive than the mean to a handful of very expensive profiles.</td></tr><tr><td><code>pct_on_discount</code></td><td class=t>fraction 0 to 1</td><td>Share of the priced profiles running a discount at the close of the month.</td></tr><tr><td><code>pct_discount_over_90d</code></td><td class=t>fraction 0 to 1</td><td>Of those on discount, the share whose discount has run without a break for 90 days or more. A gap resets the clock, so a re-activated offer does not qualify.</td></tr><tr><td><code>median_discount_depth</code></td><td class=t>fraction 0 to 1</td><td>Median depth of an active discount, as a share off the advertised price.</td></tr><tr><td><code>price_sample_n</code></td><td class=t>integer</td><td>Number of priced profiles the price columns on that row were computed on. This is the sample size behind the figures, not a catalogue total.</td></tr></tbody>
+</table></div>
+
+<h2>Known limitations</h2>
+<p>Read these before quoting a figure.</p>
+<ul><li><strong>Partial market coverage.</strong> This is a curated catalogue, not the whole platform. Nothing here is a census: a figure describes the profiles we publish, and the catalogue grows over time, so `price_sample_n` moving between months reflects coverage as well as the market.</li><li><strong>Public signals only.</strong> Everything is what a logged-out visitor can see. Private engagement, direct messages and pay-per-view sales are invisible to this dataset, which means the subscription price it reports is not the same thing as what a creator earns per fan.</li><li><strong>Collection lag.</strong> Profiles are re-checked on a rota rather than continuously, so a monthly figure can trail the market by days. This matters most for discounts, which can start and end inside a single collection interval.</li><li><strong>Labels are current, not historical.</strong> Niche and country come from the labels a profile carries today, applied to past months as well. They are stable attributes, but a creator who changed direction is described by where she is now.</li><li><strong>Short series.</strong> Usable price history is recent. The series starts at the first month with enough recorded prices to support an index, not at the first month any profile was observed, so it is shorter than the observation history.</li></ul>
+
+<h2>Where the numbers come from</h2>
+<p>The index is computed from the published catalogue on <a href="https://luvs.one/stats">the LuvsOne stats hub</a>, which carries the live figures and the archive of frozen monthly releases. The sample definition, the per measure method and the full changelog are documented on <a href="https://luvs.one/research">the dataset documentation page</a>. Both pages are the upstream source: this repository mirrors them so the data stays downloadable and archived independently of the site.</p>
+
+<footer>
+<p>Luvs Creator Price Index, published by <a href="https://luvs.one">LuvsOne</a>. Free to reuse under CC BY 4.0 with attribution. Aggregates only: the dataset carries no per creator rows and no personal data.</p>
+<p>This page is generated from the data in this repository by <code>scripts/build_site.py</code> and refreshed with every monthly release.</p>
+</footer>
+
+</div>
+</body>
+</html>
