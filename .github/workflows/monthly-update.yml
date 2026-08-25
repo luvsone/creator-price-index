@@ -89,14 +89,15 @@ jobs:
       - name: Mirror to Kaggle
         if: steps.commit.outputs.changed == 'true' || inputs.force_mirrors
         env:
-          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+          # Kaggle's NEW token format (KGAT_...), read by the CLI from this env
+          # var; the legacy KAGGLE_USERNAME/KAGGLE_KEY pair is not needed with it.
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
         run: |
-          if [ -z "$KAGGLE_USERNAME" ] || [ -z "$KAGGLE_KEY" ]; then
-            echo "Kaggle secrets not configured; skipping mirror."
+          if [ -z "$KAGGLE_API_TOKEN" ]; then
+            echo "KAGGLE_API_TOKEN not configured; skipping mirror."
             exit 0
           fi
-          pip -q install kaggle
+          pip -q install -U kaggle
           stage=$(mktemp -d)
           cp data/price-index.csv CODEBOOK.md "$stage"/
           cp data/releases/*.csv "$stage"/
