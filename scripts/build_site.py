@@ -10,7 +10,13 @@ export_from_api.py and commit the result alongside the data, so the published
 page and the published data always describe the same release.
 
 Inputs : data/price-index.csv, CODEBOOK.md, CITATION.cff
-Output : docs/index.html (self contained, no external assets, no trackers)
+Outputs: docs/index.html  the GitHub Pages landing page (self contained, no
+         external assets, no trackers)
+         index.md         the DataHub Cloud page. DataHub syncs this repository
+         and renders index.md as the site home, so GitHub keeps showing
+         README.md and DataHub shows this one. Its charts point at the CSV by
+         URL rather than at numbers pasted into the prose, so they follow every
+         monthly refresh on their own.
 """
 
 import csv
@@ -306,11 +312,120 @@ footer {{ margin-top:56px; padding-top:24px; border-top:1px solid var(--line);
 """
 
 
+def render_datahub(rows):
+    """The DataHub Cloud page. Prose figures come from the release; the charts
+    and the table read the CSV directly, so they never fall behind it."""
+    latest = rows[-1]
+    ym = latest["month"]
+    label = month_label(ym)
+    csv_url = f"{RAW}/data/price-index.csv"
+    gap = float(latest["avg_price_advertised"]) - float(latest["avg_price_real"])
+    gap_pct = gap / float(latest["avg_price_advertised"]) * 100
+    lim = "\n".join(f"- **{t}** {b}" for t, b in limitations())
+    cb = "\n".join(f"| `{c}` | {t} | {d} |" for c, t, d in codebook_rows())
+
+    return f"""# Luvs Creator Price Index
+
+What a creator subscription actually costs per month, after every discount,
+measured the same way each month from publicly visible profile data. Each
+release is frozen when the month closes, so a figure you cite today reads the
+same in a year.
+
+Aggregates only. The dataset carries no per creator rows and no personal data.
+
+| | |
+|---|---|
+| Latest release | {label} |
+| Sample behind it | {latest['price_sample_n']} priced profiles |
+| Licence | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| DOI | [{DOI}](https://doi.org/{DOI}) |
+| Upstream source | [luvs.one/stats]({SITE}/stats) |
+
+## What the {label} release says
+
+The median subscription charged **{usd(latest['median_price_real'])}** a month,
+against a mean advertised price of **{usd(latest['avg_price_advertised'])}**.
+That gap of {usd(gap)} is {gap_pct:.0f}% of the list price, and it is not noise:
+{pct(latest['pct_on_discount'])} of priced profiles were running a discount when
+the month closed, at a median depth of {pct(latest['median_discount_depth'])}.
+
+The interesting part is how permanent those discounts are.
+{pct(latest['pct_discount_over_90d'])} of the active discounts had been running
+without a break for 90 days or more, which makes the advertised price closer to
+a reference point than to a price anyone pays.
+
+<LineChart
+  data={{{{
+    url: "{csv_url}"
+  }}}}
+  title="Median subscription price actually charged, USD per month"
+  xAxis="month"
+  yAxis="median_price_real"
+/>
+
+<LineChart
+  data={{{{
+    url: "{csv_url}"
+  }}}}
+  title="Mean advertised price, USD per month"
+  xAxis="month"
+  yAxis="avg_price_advertised"
+/>
+
+## The full series
+
+<FlatUiTable
+  data={{{{
+    url: "{csv_url}"
+  }}}}
+/>
+
+## Get the data
+
+- [Full series as CSV]({csv_url}), rewritten as each month is frozen
+- [Frozen releases]({REPO}/tree/main/data/releases), one immutable file per month
+- [Release bundle as .zip]({SITE}/api/v1/price-index.zip): CSV, JSON metadata and a README with the citation
+- [Read only JSON API]({SITE}/api/v1/price-index), no key, open CORS. Add `?release=YYYY-MM` to pin a response to a frozen month.
+
+Mirrors: [Zenodo](https://doi.org/{DOI}) is the archived copy of record,
+with [Kaggle](https://www.kaggle.com/datasets/luvsone/creator-subscription-pricing-luvs-index)
+and [Hugging Face](https://huggingface.co/datasets/luvsone/creator_price_index)
+carrying the same files.
+
+## How to cite
+
+```
+LuvsOne ({ym[:4]}). Luvs Creator Price Index, {label} release. https://doi.org/{DOI}
+```
+
+## Column definitions
+
+| Column | Type | Definition |
+|---|---|---|
+{cb}
+
+An empty cell means the measure was not computable for that month. It never means zero.
+
+## Known limitations
+
+{lim}
+
+## Where the numbers come from
+
+The index is computed from the published catalogue on
+[the LuvsOne stats hub]({SITE}/stats), which carries the live figures and the
+archive of frozen monthly releases. The sample definition, the per measure
+method and the full changelog are documented on
+[the dataset documentation page]({SITE}/research).
+"""
+
+
 def main():
     DOCS.mkdir(exist_ok=True)
     (DOCS / "index.html").write_text(render(), encoding="utf-8")
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")
-    print(f"wrote {DOCS / 'index.html'}")
+    (ROOT / "index.md").write_text(render_datahub(read_series()), encoding="utf-8")
+    print(f"wrote {DOCS / 'index.html'} and {ROOT / 'index.md'}")
 
 
 if __name__ == "__main__":
