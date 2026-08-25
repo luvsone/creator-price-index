@@ -43,3 +43,32 @@ jobs:
           git add data
           git commit -m "data: monthly refresh from the public API"
           git push
+
+      # One GitHub Release per data month, created automatically so the Zenodo
+      # webhook mints the matching version DOI with zero manual steps. The tag is
+      # derived from the newest month in the series (v2026.08 for 2026-08).
+      # Idempotent: if the tag's release already exists, nothing happens, so a
+      # manual re-run never duplicates a version. Releases created with the
+      # workflow's own GITHUB_TOKEN do not trigger other workflows, but they DO
+      # fire ordinary repository webhooks, which is what Zenodo listens on.
+      - name: Publish release for Zenodo versioning
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          month=$(tail -1 data/price-index.csv | cut -d, -f1)
+          case "$month" in
+            20[0-9][0-9]-[0-1][0-9]) ;;
+            *) echo "No parsable month in the series ($month); skipping release."; exit 0 ;;
+          esac
+          tag="v${month/-/.}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists; nothing to do."
+            exit 0
+          fi
+          label=$(date -d "${month}-01" +"%B %Y" 2>/dev/null || echo "$month")
+          notes=$(printf '%s\n\n%s\n%s\n\n%s' \
+            "Monthly release of the Luvs Creator Price Index, with data through ${month}." \
+            "Live figures and the release archive: https://luvs.one/stats" \
+            "Dataset documentation and read only API: https://luvs.one/research" \
+            "Aggregates only, CC BY 4.0.")
+          gh release create "$tag" --title "${label} release" --notes "$notes"
