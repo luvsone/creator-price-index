@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import os
 import sys
@@ -40,8 +41,7 @@ COLUMNS = [
     "pct_on_discount",
     "pct_discount_over_90d",
     "median_discount_depth",
-    "creators_tracked",
-    "creators_scored",
+    "price_sample_n",
 ]
 
 
@@ -83,17 +83,27 @@ def row_for(point: dict, summary: dict | None) -> list[str]:
         fraction(point.get("pct_on_discount")),
         fraction((summary or {}).get("pct_discount_over_90_days")),
         fraction((summary or {}).get("median_discount_depth")),
-        integer((summary or {}).get("creators_tracked")),
-        integer((summary or {}).get("creators_scored")),
+        # How many paid pages the price figures on this row were computed on.
+        # The catalogue headcount is deliberately NOT published: it is a fact
+        # about us, not about the market, and it is the number that gets lifted
+        # out of context. The sample size is the one a reader needs.
+        integer((summary or {}).get("price_n")),
     ]
+
+
+def csv_text(rows: list[list[str]]) -> str:
+    """The exact bytes write_csv would produce, for comparing against a file."""
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(COLUMNS)
+    w.writerows(rows)
+    return buf.getvalue()
 
 
 def write_csv(path: str, rows: list[list[str]]) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f, lineterminator="\n")
-        w.writerow(COLUMNS)
-        w.writerows(rows)
+        f.write(csv_text(rows))
 
 
 def main() -> int:
@@ -131,16 +141,29 @@ def main() -> int:
     write_csv(os.path.join(DATA, "price-index.csv"), rows)
     print(f"[export] Wrote data/price-index.csv ({len(rows)} months).")
 
-    # Immutable per-release files. Never rewritten: a release that already exists
-    # here was frozen, and someone may have cited it.
+    # Per-release files. A frozen release is not rewritten on a whim, but it IS
+    # rewritten when the source has published a correction: the alternative is a
+    # mirror that contradicts luvs.one about the same month, which is worse than
+    # a change. Nothing changes quietly either way, because every rewrite lands
+    # as its own commit and git log is the audit trail. (This is what happened to
+    # 2026-07: exported here on Aug 3, recomputed upstream on Aug 20, and the
+    # copy kept the pre-correction figures until this rule changed.)
     written = 0
+    corrected = 0
     for row in rows:
         path = os.path.join(RELEASES, f"{row[0]}.csv")
         if os.path.exists(path):
+            with open(path, encoding="utf-8") as f:
+                current = f.read()
+            if current == csv_text([row]):
+                continue
+            write_csv(path, [row])
+            corrected += 1
+            print(f"[export] Corrected data/releases/{row[0]}.csv to match the source.")
             continue
         write_csv(path, [row])
         written += 1
-    print(f"[export] Wrote {written} new release file(s) to data/releases/.")
+    print(f"[export] Wrote {written} new release file(s), corrected {corrected}.")
 
     sample = os.path.join(DATA, "sample-2026-07.csv")
     if os.path.exists(sample):

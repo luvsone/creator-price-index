@@ -38,8 +38,7 @@ One row per calendar month. Full definitions in [CODEBOOK.md](CODEBOOK.md).
 | `pct_on_discount` | 0 to 1 | Share of priced profiles running a discount |
 | `pct_discount_over_90d` | 0 to 1 | Of those, the share running 90 days or more without a break |
 | `median_discount_depth` | 0 to 1 | Median share off the advertised price |
-| `creators_tracked` | integer | Profiles observed that month |
-| `creators_scored` | integer | Of those, how many carried a score |
+| `price_sample_n` | integer | Priced profiles the row was computed on (sample size) |
 
 An empty cell means the value was not computable for that month. It never means
 zero.

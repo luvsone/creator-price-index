@@ -1,2 +1,2 @@
-month,avg_price_real,avg_price_advertised,median_price_real,pct_on_discount,pct_discount_over_90d,median_discount_depth,creators_tracked,creators_scored
-2026-04,8.20,12.92,6.40,0.5545,,0.5500,,
+month,avg_price_real,avg_price_advertised,median_price_real,pct_on_discount,pct_discount_over_90d,median_discount_depth,price_sample_n
+2026-04,8.20,12.92,6.40,0.5545,,0.5500,422

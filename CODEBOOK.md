@@ -15,8 +15,7 @@ Every file in `data/` uses this schema, one row per calendar month.
 | `pct_on_discount` | fraction 0 to 1 | Share of the priced profiles running a discount at the close of the month. |
 | `pct_discount_over_90d` | fraction 0 to 1 | Of those on discount, the share whose discount has run without a break for 90 days or more. A gap resets the clock, so a re-activated offer does not qualify. |
 | `median_discount_depth` | fraction 0 to 1 | Median depth of an active discount, as a share off the advertised price. |
-| `creators_tracked` | integer | Profiles observed in that month. |
-| `creators_scored` | integer | Of those, how many carried a score at the close of the month. |
+| `price_sample_n` | integer | Number of priced profiles the price columns on that row were computed on. This is the sample size behind the figures, not a catalogue total. |
 
 An empty cell means the value was not computable for that month. It never means
 zero. A month with no usable price coverage is published with empty price columns
@@ -52,7 +51,7 @@ usernames, no identifiers, and no row that describes one person.
 
 **Partial market coverage.** This is a curated catalogue, not the whole platform.
 Nothing here is a census: a figure describes the profiles we publish, and the
-catalogue grows over time, so `creators_tracked` moving between months reflects
+catalogue grows over time, so `price_sample_n` moving between months reflects
 coverage as well as the market.
 
 **Public signals only.** Everything is what a logged-out visitor can see. Private
