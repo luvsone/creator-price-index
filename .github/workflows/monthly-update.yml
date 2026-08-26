@@ -26,7 +26,12 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      # Full history, not the default shallow clone: the Codeberg push at the end
+      # needs the ancestry to prove it is a fast forward, and a one commit clone
+      # cannot. The repository is small, so the extra fetch costs nothing.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
