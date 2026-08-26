@@ -128,3 +128,22 @@ jobs:
           hf upload luvsone/creator_price_index data/price-index.csv price-index.csv \
             --repo-type dataset --commit-message "Monthly refresh: data through ${month}"
           echo "Hugging Face mirror updated through ${month}."
+
+      # Codeberg carries a public copy of the repository. Codeberg has pull
+      # mirrors disabled platform wide (they consume resources indefinitely), so
+      # the copy is kept current by pushing to it rather than by it pulling from
+      # here. A plain push, never forced: if the two ever diverge the step fails
+      # loudly instead of quietly overwriting the copy of record.
+      - name: Mirror to Codeberg
+        if: steps.commit.outputs.changed == 'true' || inputs.force_mirrors
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_REPO: wizedesign/creator-price-index
+        run: |
+          if [ -z "$CODEBERG_TOKEN" ]; then
+            echo "CODEBERG_TOKEN not configured; skipping mirror."
+            exit 0
+          fi
+          user="${CODEBERG_REPO%%/*}"
+          git push "https://${user}:${CODEBERG_TOKEN}@codeberg.org/${CODEBERG_REPO}.git" HEAD:main
+          echo "Codeberg mirror updated."
