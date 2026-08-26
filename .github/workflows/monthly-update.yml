@@ -55,7 +55,7 @@ jobs:
           fi
           git config user.name  "luvsone-bot"
           git config user.email "data@luvs.one"
-          git add data docs
+          git add data docs index.md
           git commit -m "data: monthly refresh from the public API"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
