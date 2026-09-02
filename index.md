@@ -9,22 +9,22 @@ Aggregates only. The dataset carries no per creator rows and no personal data.
 
 | | |
 |---|---|
-| Latest release | July 2026 |
-| Sample behind it | 496 priced profiles |
+| Latest release | August 2026 |
+| Sample behind it | 556 priced profiles |
 | Licence | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | DOI | [10.5281/zenodo.22094426](https://doi.org/10.5281/zenodo.22094426) |
 | Upstream source | [luvs.one/stats](https://luvs.one/stats) |
 
-## What the July 2026 release says
+## What the August 2026 release says
 
-The median subscription charged **$6.30** a month,
-against a mean advertised price of **$12.76**.
-That gap of $4.57 is 36% of the list price, and it is not noise:
-56.5% of priced profiles were running a discount when
-the month closed, at a median depth of 50.0%.
+The median subscription charged **$6.00** a month,
+against a mean advertised price of **$12.61**.
+That gap of $4.36 is 35% of the list price, and it is not noise:
+56.3% of priced profiles were running a discount when
+the month closed, at a median depth of 55.0%.
 
 The interesting part is how permanent those discounts are.
-47.1% of the active discounts had been running
+40.9% of the active discounts had been running
 without a break for 90 days or more, which makes the advertised price closer to
 a reference point than to a price anyone pays.
 
@@ -69,7 +69,7 @@ carrying the same files.
 ## How to cite
 
 ```
-LuvsOne (2026). Luvs Creator Price Index, July 2026 release. https://doi.org/10.5281/zenodo.22094426
+LuvsOne (2026). Luvs Creator Price Index, August 2026 release. https://doi.org/10.5281/zenodo.22094426
 ```
 
 ## Column definitions
